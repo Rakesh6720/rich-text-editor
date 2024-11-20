@@ -13,8 +13,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import Tiptap from "@/components/Tiptap";
+import React from "react";
 
 export default function Home() {
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
   const formSchema = z.object({
     title: z
       .string()
@@ -35,7 +38,11 @@ export default function Home() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {};
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    setTitle(values.title);
+    console.log(values.description);
+    setDescription(values.description);
+  };
 
   return (
     <main className="p-24">
@@ -72,6 +79,8 @@ export default function Home() {
           </Button>
         </form>
       </Form>
+      <h1>Title: {title}</h1>
+      <p>Description: {description}</p>
     </main>
   );
 }
