@@ -15,15 +15,30 @@ import { Button } from "@/components/ui/button";
 import Tiptap from "@/components/Tiptap";
 import React from "react";
 
+const reducer = (
+  state: { title: string; description: string },
+  action: any
+) => {
+  switch (action.type) {
+    case "title":
+      return { ...state, title: action.payload };
+    case "description":
+      return { ...state, description: action.payload };
+    default:
+      return state;
+  }
+};
+
 export default function Home() {
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
+  const [state, dispatch] = React.useReducer(reducer, {
+    title: "",
+    description: "",
+  });
   const formSchema = z.object({
     title: z
       .string()
       .min(4, { message: "The title is not long enough" })
       .max(100, { message: "The title is too long" }),
-    price: z.number().min(0, { message: "The price must be positive" }),
     description: z
       .string()
       .max(500, { message: "The description is too long" }),
@@ -33,15 +48,16 @@ export default function Home() {
     mode: "onChange",
     defaultValues: {
       title: "",
-      price: 29.99,
       description: "",
     },
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    setTitle(values.title);
-    console.log(values.description);
-    setDescription(values.description);
+    dispatch({ type: "title", payload: values.title });
+    dispatch({
+      type: "description",
+      payload: values.description,
+    });
   };
 
   return (
@@ -79,8 +95,9 @@ export default function Home() {
           </Button>
         </form>
       </Form>
-      <h1>Title: {title}</h1>
-      <p>Description: {description}</p>
+      <h1>Title: {state.title}</h1>
+      <h2>Description:</h2>
+      <div dangerouslySetInnerHTML={{ __html: state.description }} />
     </main>
   );
 }
