@@ -95,9 +95,11 @@ export default function Home() {
           </Button>
         </form>
       </Form>
-      <h1>Title: {state.title}</h1>
-      <h2>Description:</h2>
-      <div dangerouslySetInnerHTML={{ __html: state.description }} />
+      <div>
+        <h1>Title: {state.title}</h1>
+        <h2>Description:</h2>
+        <div dangerouslySetInnerHTML={{ __html: state.description }} />
+      </div>
     </main>
   );
 }
