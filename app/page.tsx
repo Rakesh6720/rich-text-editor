@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import Tiptap from "@/components/Tiptap";
 
 export default function Home() {
   const formSchema = z.object({
@@ -33,10 +35,12 @@ export default function Home() {
     },
   });
 
+  const onSubmit = (values: z.infer<typeof formSchema>) => {};
+
   return (
     <main className="p-24">
       <Form {...form}>
-        <form>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="title"
@@ -50,6 +54,22 @@ export default function Home() {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Tiptap description={field.name} onChange={field.onChange} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="my-4">
+            Submit
+          </Button>
         </form>
       </Form>
     </main>
